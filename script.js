@@ -87,7 +87,7 @@ function switchTab(tab) {
 
     if (badge) {
         badge.innerHTML = isSub ? 
-            '<span class="hero-badge-dot"></span> Passive OSINT Discovery' : 
+            '<span class="hero-badge-dot"></span> Passive Subdomain Discovery' : 
             '<span class="hero-badge-dot"></span> Passive Endpoint Harvesting';
     }
     if (title) {
