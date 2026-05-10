@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReconZ - Advanced Passive Reconnaissance Platform</title>
+  <meta name="description" content="Next-generation reconnaissance and footprinting platform." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Ambient Glow Orbs -->
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+  <div class="ambient-orb orb-3"></div>
+
+  <div class="app-container">
+
+    <!-- ========== FLOATING DESKTOP NAV ========== -->
+    <nav class="floating-nav" role="navigation" aria-label="Main navigation">
+      <a href="#" class="nav-logo" aria-label="ReconZ Home">
+        <div class="nav-logo-icon">
+          <span class="logo-letter">Z</span>
+          <div class="logo-pulse"></div>
+        </div>
+        <span class="nav-logo-text">ReconZ</span>
+        <span class="nav-badge">V1.0</span>
+      </a>
+
+      <div class="nav-divider" aria-hidden="true"></div>
+
+      <div class="nav-links">
+        <button class="nav-link active" id="pill-subdomain" onclick="switchTab('subdomain')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2" />
+          </svg>
+          <span>Subdomains</span>
+        </button>
+        <button class="nav-link" id="pill-endpoint" onclick="switchTab('endpoint')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
+          </svg>
+          <span>Endpoints</span>
+        </button>
+      </div>
+
+      <div class="nav-divider" aria-hidden="true"></div>
+
+      <a href="https://github.com/iamshafayat/ReconZ" target="_blank" rel="noopener noreferrer" class="nav-cta-btn"
+        aria-label="View ReconZ on GitHub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path
+            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+        </svg>
+        <span>GitHub</span>
+      </a>
+      <div class="nav-divider" aria-hidden="true"></div>
+      <a href="https://iamshafayat.github.io/JSpider/" target="_blank" rel="noopener noreferrer" class="nav-cta-btn"
+        aria-label="Visit JSpider">
+        <svg width="18" height="18" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+          <ellipse cx="50" cy="18" rx="8" ry="7" />
+          <ellipse cx="50" cy="42" rx="14" ry="18" />
+          <ellipse cx="50" cy="70" rx="18" ry="22" />
+          <path d="M46 24 L44 30 M54 24 L56 30" />
+          <path d="M36 36 Q20 20 6 8" stroke="currentColor" fill="none" stroke-width="4" stroke-linecap="round" />
+          <path d="M36 42 Q16 32 2 28" stroke="currentColor" fill="none" stroke-width="4" stroke-linecap="round" />
+          <path d="M36 48 Q16 52 2 60" stroke="currentColor" fill="none" stroke-width="4" stroke-linecap="round" />
+          <path d="M36 54 Q22 68 8 88" stroke="currentColor" fill="none" stroke-width="4" stroke-linecap="round" />
+          <path d="M64 36 Q80 20 94 8" stroke="currentColor" fill="none" stroke-width="4" stroke-linecap="round" />
+          <path d="M64 42 Q84 32 98 28" stroke="currentColor" fill="none" stroke-width="4" stroke-linecap="round" />
+          <path d="M64 48 Q84 52 98 60" stroke="currentColor" fill="none" stroke-width="4" stroke-linecap="round" />
+          <path d="M64 54 Q78 68 92 88" stroke="currentColor" fill="none" stroke-width="4" stroke-linecap="round" />
+        </svg>
+        <span>JSpider</span>
+      </a>
+    </nav>
+
+    <!-- ========== MOBILE NAV ========== -->
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <a href="#" class="mobile-logo" aria-label="ReconZ Home">
+        <div class="nav-logo-icon nav-logo-icon--sm">
+          <span class="logo-letter">Z</span>
+        </div>
+        <span class="mobile-logo-text">ReconZ</span>
+        <span class="mobile-badge">V1.0</span>
+      </a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false"
+        aria-controls="mobileMenu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <button class="mobile-nav-link active" id="mobileSubdomainBtn" onclick="switchTab('subdomain')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2" />
+        </svg>
+        <span>Subdomain Recon</span>
+      </button>
+      <button class="mobile-nav-link" id="mobileEndpointBtn" onclick="switchTab('endpoint')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
+        </svg>
+        <span>Endpoint Harvest</span>
+      </button>
+      <div class="mobile-divider" aria-hidden="true"></div>
+      <div class="mobile-divider" aria-hidden="true"></div>
+      <a href="https://github.com/iamshafayat/ReconZ" target="_blank" rel="noopener noreferrer" class="mobile-cta-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path
+            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+        </svg>
+        <span>GitHub</span>
+      </a>
+      <a href="https://iamshafayat.github.io/JSpider/" target="_blank" rel="noopener noreferrer" class="mobile-cta-btn"
+        style="margin-top: 8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+        </svg>
+        <span>JSpider</span>
+      </a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- Page Title Section -->
+      <div class="page-hero">
+        <div class="hero-badge" id="hero-badge-text">
+          <span class="hero-badge-dot"></span>
+          Passive Subdomain Discovery
+        </div>
+        <h1 class="page-title" id="page-title-text">Subdomain Reconnaissance</h1>
+        <p class="page-subtitle" id="page-subtitle-text">Map your target's entire infrastructure footprint using
+          aggregated certificate transparency logs and public DNS archives — zero contact with the target server.</p>
+      </div>
+
+      <!-- SUBDOMAIN TAB -->
+      <div id="tab-subdomain">
+        <div class="search-container">
+          <div class="glass-card search-card">
+            <div class="card-shine"></div>
+            <div class="input-group">
+              <div class="input-wrap">
+                <span class="icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                </span>
+                <input id="domain-input" type="text" placeholder="Enter target domain (e.g. example.com)"
+                  autocomplete="off" spellcheck="false" />
+              </div>
+              <button class="scan-btn" id="scan-btn" onclick="startScan()">
+                <span class="btn-text">Initiate Scout</span>
+                <span class="btn-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </span>
+                <div class="btn-shimmer"></div>
+              </button>
+            </div>
+
+            <div class="source-section">
+              <div class="source-header">
+                <span class="source-title">Intelligence Sources</span>
+                <span class="source-count" id="source-active-count">7 active</span>
+              </div>
+              <div class="source-grid">
+                <label class="source-toggle active" id="toggle-hackertarget">
+                  <input type="checkbox" checked onchange="toggleSource(this,'hackertarget')" />
+                  <span class="toggle-track"><span class="toggle-knob"></span></span>
+                  <span class="source-name">HackerTarget</span>
+                </label>
+                <label class="source-toggle active" id="toggle-urlscan">
+                  <input type="checkbox" checked onchange="toggleSource(this,'urlscan')" />
+                  <span class="toggle-track"><span class="toggle-knob"></span></span>
+                  <span class="source-name">URLScan.io</span>
+                </label>
+                <label class="source-toggle active" id="toggle-crtsh">
+                  <input type="checkbox" checked onchange="toggleSource(this,'crtsh')" />
+                  <span class="toggle-track"><span class="toggle-knob"></span></span>
+                  <span class="source-name">crt.sh</span>
+                </label>
+                <label class="source-toggle active" id="toggle-jldc">
+                  <input type="checkbox" checked onchange="toggleSource(this,'jldc')" />
+                  <span class="toggle-track"><span class="toggle-knob"></span></span>
+                  <span class="source-name">JLDC</span>
+                </label>
+                <label class="source-toggle active" id="toggle-certspotter">
+                  <input type="checkbox" checked onchange="toggleSource(this,'certspotter')" />
+                  <span class="toggle-track"><span class="toggle-knob"></span></span>
+                  <span class="source-name">CertSpotter</span>
+                </label>
+                <label class="source-toggle active" id="toggle-rapiddns">
+                  <input type="checkbox" checked onchange="toggleSource(this,'rapiddns')" />
+                  <span class="toggle-track"><span class="toggle-knob"></span></span>
+                  <span class="source-name">RapidDNS</span>
+                </label>
+                <label class="source-toggle active" id="toggle-dnsrepo">
+                  <input type="checkbox" checked onchange="toggleSource(this,'dnsrepo')" />
+                  <span class="toggle-track"><span class="toggle-knob"></span></span>
+                  <span class="source-name">DNSRepo</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Panel -->
+        <div class="progress-panel" id="progress-wrap">
+          <div class="progress-header">
+            <div class="progress-info">
+              <div class="progress-spinner"></div>
+              <span class="progress-pct-text" id="progress-pct">0%</span>
+              <span class="progress-label">— Discovering assets...</span>
+            </div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progress-bar"></div>
+            <div class="progress-glow"></div>
+          </div>
+          <div class="source-status" id="source-status"
+            style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem;"></div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" id="stats-row" style="display:none">
+          <div class="stat-item">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-content">
+              <div class="stat-label">Subdomains</div>
+              <div class="stat-value" id="stat-total">0</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon">🌐</div>
+            <div class="stat-content">
+              <div class="stat-label">Resolved</div>
+              <div class="stat-value" id="stat-resolved">0</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon">📡</div>
+            <div class="stat-content">
+              <div class="stat-label">Sources Hit</div>
+              <div class="stat-value" id="stat-sources">0</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon">🔗</div>
+            <div class="stat-content">
+              <div class="stat-label">Unique IPs</div>
+              <div class="stat-value" id="stat-unique-ips">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section">
+          <div class="results-head">
+            <div class="results-title-wrap">
+              <div class="section-title">Infrastructure Map</div>
+              <span class="result-count-badge" id="result-count"></span>
+            </div>
+            <div class="table-actions">
+              <div class="search-mini-wrap">
+                <svg class="search-mini-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input class="search-mini" id="filter-input" type="text" placeholder="Filter map..."
+                  oninput="filterTable()" />
+              </div>
+              <button class="btn-secondary" onclick="copyAll()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                </svg>
+                Copy
+              </button>
+              <button class="btn-secondary" onclick="exportTxt()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Export
+              </button>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 70px">#</th>
+                  <th>SUBDOMAIN</th>
+                  <th>IP ADDRESS</th>
+                  <th>SOURCE</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody id="results-tbody">
+                <tr>
+                  <td colspan="5">
+                    <div class="empty-state">
+                      <div class="empty-icon">
+                        <div class="radar-sweep"></div>
+                        🛰
+                      </div>
+                      <p class="empty-title">Waiting for a target...</p>
+                      <p class="empty-sub">Enter a domain above to begin reconnaissance</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENDPOINT TAB -->
+      <div id="tab-endpoint" style="display:none">
+        <div class="search-container">
+          <div class="glass-card search-card">
+            <div class="card-shine"></div>
+            <div class="input-group">
+              <div class="input-wrap">
+                <span class="icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                </span>
+                <input id="ep-domain-input" type="text" placeholder="Target domain for endpoint harvest..."
+                  autocomplete="off" spellcheck="false" />
+              </div>
+              <button class="scan-btn" id="ep-scan-btn" onclick="startEpScan()">
+                <span class="btn-text">Harvest Endpoints</span>
+                <span class="btn-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </span>
+                <div class="btn-shimmer"></div>
+              </button>
+            </div>
+
+            <div class="source-section">
+              <div class="source-header">
+                <span class="source-title">Harvest Sources</span>
+                <span class="source-count">4 active</span>
+              </div>
+              <div class="source-grid">
+                <label class="source-toggle active" id="ep-toggle-wayback">
+                  <input type="checkbox" checked onchange="toggleEpSource(this,'wayback')" />
+                  <span class="toggle-track"><span class="toggle-knob"></span></span>
+                  <span class="source-name">Wayback</span>
+                </label>
+                <label class="source-toggle active" id="ep-toggle-commoncrawl">
+                  <input type="checkbox" checked onchange="toggleEpSource(this,'commoncrawl')" />
+                  <span class="toggle-track"><span class="toggle-knob"></span></span>
+                  <span class="source-name">Common Crawl</span>
+                </label>
+                <label class="source-toggle active" id="ep-toggle-otx">
+                  <input type="checkbox" checked onchange="toggleEpSource(this,'otx')" />
+                  <span class="toggle-track"><span class="toggle-knob"></span></span>
+                  <span class="source-name">OTX</span>
+                </label>
+                <label class="source-toggle active" id="ep-toggle-urlscan">
+                  <input type="checkbox" checked onchange="toggleEpSource(this,'urlscan')" />
+                  <span class="toggle-track"><span class="toggle-knob"></span></span>
+                  <span class="source-name">URLScan.io</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Endpoint Progress -->
+        <div class="progress-panel" id="ep-progress-wrap" style="display:none">
+          <div class="progress-header">
+            <div class="progress-info">
+              <div class="progress-spinner"></div>
+              <span id="ep-progress-pct">0%</span>
+              <span id="ep-progress-title">— Harvesting paths...</span>
+            </div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="ep-progress-bar"></div>
+            <div class="progress-glow"></div>
+          </div>
+          <div class="source-status" id="ep-source-status"
+            style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem;"></div>
+        </div>
+
+        <!-- Endpoint Stats -->
+        <div class="stats-grid" id="ep-stats-row" style="display:none">
+          <div class="stat-item">
+            <div class="stat-icon">📡</div>
+            <div class="stat-content">
+              <div class="stat-label">Endpoints Harvested</div>
+              <div class="stat-value" id="ep-stat-total">0</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon">🔌</div>
+            <div class="stat-content">
+              <div class="stat-label">Active Sources</div>
+              <div class="stat-value" id="ep-stat-sources">0</div>
+            </div>
+          </div>
+          <div class="stat-item" style="grid-column: span 2">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-content">
+              <div class="stat-label">Target Intel</div>
+              <div class="stat-value" id="ep-stat-domain" style="font-size: 1.4rem;">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Endpoint Results -->
+        <div class="results-section">
+          <div class="results-head">
+            <div class="results-title-wrap">
+              <div class="section-title">Endpoint Harvest</div>
+              <span class="result-count-badge" id="ep-result-count"></span>
+            </div>
+            <div class="table-actions">
+              <div class="ep-filter-wrap" id="ep-filter-wrap" style="position: relative;">
+                <button class="btn-secondary" id="ep-filter-btn" onclick="toggleEpFilterMenu(event)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                  </svg>
+                  Filters
+                  <span id="ep-filter-badge"
+                    style="display:none; background: var(--primary); color: #000; padding: 0.1rem 0.5rem; border-radius: 6px; font-size: 0.65rem; font-weight: 800; margin-left: 0.3rem;">0</span>
+                </button>
+                <div id="ep-filter-menu" class="filter-dropdown">
+                  <div class="filter-dropdown-header">
+                    <span>Filter Options</span>
+                    <button class="filter-close" onclick="toggleEpFilterMenu(event)">✕</button>
+                  </div>
+                  <input type="text" id="ep-filter-input" class="search-mini" style="width: 100%; margin-bottom: 1rem;"
+                    placeholder="Search harvest..." oninput="renderEpTable(epResults)" />
+                  <div class="filter-category-title">Categories</div>
+                  <div class="filter-chips">
+                    <button class="filter-chip" id="chip-js" onclick="toggleEpChip('js')">
+                      <span class="chip-dot"></span> JS
+                    </button>
+                    <button class="filter-chip" id="chip-config" onclick="toggleEpChip('config')">
+                      <span class="chip-dot"></span> Config
+                    </button>
+                    <button class="filter-chip" id="chip-api" onclick="toggleEpChip('api')">
+                      <span class="chip-dot"></span> API
+                    </button>
+                    <button class="filter-chip" id="chip-auth" onclick="toggleEpChip('auth')">
+                      <span class="chip-dot"></span> Auth
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button class="btn-secondary" onclick="copyAllEp()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                </svg>
+                Copy
+              </button>
+              <button class="btn-secondary" onclick="exportEpTxt()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Export
+              </button>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 70px">#</th>
+                  <th>ENDPOINT URL</th>
+                  <th>LAST STATUS</th>
+                  <th>SOURCE INTEL</th>
+                </tr>
+              </thead>
+              <tbody id="ep-results-tbody">
+                <tr>
+                  <td colspan="4">
+                    <div class="empty-state">
+                      <div class="empty-icon">
+                        <div class="radar-sweep"></div>
+                        📡
+                      </div>
+                      <p class="empty-title">Awaiting harvest initiation...</p>
+                      <p class="empty-sub">Enter a domain to discover endpoints</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <footer class="app-footer">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <div class="footer-logo">Z</div>
+            <span>&copy; 2026 ReconZ</span>
+          </div>
+          <span class="footer-divider">&bull;</span>
+          <span>Nebula Stealth Intelligence Suite</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- MODALS -->
+  <div class="recon-modal-overlay" id="httpx-tip" onclick="if(event.target===this)this.classList.remove('visible')">
+    <div class="glass-card modal-card">
+      <div id="rm-close-btn" class="modal-close"
+        onclick="document.getElementById('httpx-tip').classList.remove('visible')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </div>
+      <div id="rm-body" class="rm-body"></div>
+    </div>
+  </div>
+
+  <div class="recon-modal-overlay" id="wn-overlay" onclick="if(event.target===this)closeWhatNext()">
+    <div class="glass-card modal-card">
+      <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
+        <div class="modal-icon-wrap">
+          🎯
+        </div>
+        <div>
+          <h2 id="wn-modal-title" class="modal-title">Next Steps</h2>
+          <div id="wn-modal-sub" class="modal-subtitle">Intelligence Methodology</div>
+        </div>
+      </div>
+      <div id="wn-steps-container"></div>
+      <button class="scan-btn modal-dismiss-btn" onclick="closeWhatNext()">
+        <span class="btn-text">Dismiss</span>
+        <div class="btn-shimmer"></div>
+      </button>
+    </div>
+  </div>
+
+  <!-- TOASTS -->
+  <div class="toast" id="toast"></div>
+  <div class="toast" id="wn-toast" onclick="openWhatNext()" style="cursor: pointer;">
+    <div class="toast-content">
+      <span class="toast-icon">✨</span>
+      <div>
+        <div class="toast-title">Operation Complete</div>
+        <div class="toast-sub">Review recommended next steps</div>
+      </div>
+      <svg class="toast-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6" />
+      </svg>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
